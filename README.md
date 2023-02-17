@@ -9,4 +9,9 @@
 
 ### If you ever wanted to do these things, this is for you!
 
+## Characteristics of the code:
+
+#### *minimal*, only 3 dependencies!
+#### kinda *fast*, some of the main dependencies are well-optimized.
+
 ###### I'll more readme content soon maybe?
