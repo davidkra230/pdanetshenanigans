@@ -62,4 +62,4 @@ var tempInterval = setInterval(()=>{
         });
         console.log("If everything has loaded, use the ip: \""+ip+"\" as the dns server ip to get free pdanet/foxfi.")
     }
-},50)
+},10)
