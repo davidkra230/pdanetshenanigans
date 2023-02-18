@@ -22,8 +22,8 @@ jobs:
        run: "yarn install"
      - name: Yarn Build
        run: "yarn build"
-     - name: Post Build
-       run: "yarn build:post"
+#     - name: Post Build
+#       run: "yarn build:post"
      - name: Rename Output
        run: "mv ./dist/index.exe ./dist/pdanetshenanigans.exe"
      - name: Upload exe
