@@ -11,7 +11,8 @@
   "main": "./index.js",
   "scripts": {
     "start": "node .",
-    "startdev": "nodemon .",
-    "build": "pkg index.js -C --out-path dist -t win-x64"
+    "start:dev": "nodemon .",
+    "build": "pkg index.js -C --out-path dist -t win-x64",
+    "build:post": "./build_assets/rcedit.exe \"./dist/index.exe\" --set-icon \"./build_assets/icon.ico\""
   }
 }
