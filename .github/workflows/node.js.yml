@@ -17,7 +17,7 @@ jobs:
        with:
           node-version: '18.x'
      - name: Debug
-       run: "dir ."
+       run: "tree"
      - name: Yarn Dependancy Installation
        run: "yarn install"
      - name: Yarn Build
