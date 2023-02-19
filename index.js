@@ -60,6 +60,6 @@ var tempInterval = setInterval(()=>{
             });
             send(response);
         });
-        console.log("If everything has loaded, use the ip: \""+ip+"\" as the dns server ip to get free pdanet/foxfi.")
+        console.log("If everything has loaded any you have accepted the windows prompt, use the ip: \""+ip+"\" as the dns server to start tinkering.")
     }
 },10)
