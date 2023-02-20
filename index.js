@@ -9,6 +9,8 @@ const app = express();
 app.use(express.text());
 
 var ip = null;
+var halt = false;
+var doneSetup = { dns: false, web: false };
 localIp().then((yessir) => {
     ip = yessir;
 });
@@ -56,15 +58,41 @@ app.get("*", (_, res) => {
     }
 });
 
+// iis had me tripped up, nice.
 app.listen(80, () => {
-    console.log("Web Server Listening.");
+    if (halt != true) {
+        console.log("Web Server Listening.");
+    }
+    doneSetup.web = true;
+}).on("error", () => {
+    if (halt != true) {
+        console.log(
+            "The web server failed to start, check if port 80 (http) is in use, if it isn't you can retry with admin privileges."
+        );
+    }
+    halt = true;
+    new Promise(() => {}).then();
 });
+
 dnsServer.listen({ udp: 53 }).then(() => {
-    console.log("DNS Server Listening.");
+    if (halt != true) {
+        console.log("DNS Server Listening.");
+    }
+    doneSetup.dns = true;
+});
+
+dnsServer.on("error", () => {
+    if (halt != true) {
+        console.log(
+            "Failed to start the DNS server, you could use SysInternals' TcpView to see what's holding you up, restarting with admin privileges may help."
+        );
+    }
+    halt = true;
+    new Promise(() => {}).then();
 });
 
 var tempInterval = setInterval(() => {
-    if (ip != null) {
+    if (ip != null && doneSetup.dns === true && doneSetup.web === true) {
         clearInterval(tempInterval);
         tempInterval = undefined;
         dnsServer.on("request", (request, send, client) => {
@@ -82,9 +110,9 @@ var tempInterval = setInterval(() => {
             send(response);
         });
         console.log(
-            'If everything has loaded any you have accepted the windows network prompt, use the ip: "' +
+            'If everything has loaded any you have accepted the windows network prompt (if any), use the ip: "' +
                 ip +
                 '" as the dns server to start tinkering. (high chance of breaking with multiple connections.)'
         );
     }
-}, 10);
+}, 25);
