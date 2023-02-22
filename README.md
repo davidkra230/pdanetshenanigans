@@ -11,8 +11,7 @@
 
 ## Characteristics of the code:
 
-#### *minimal*, only 3 dependencies!
-#### kinda *fast*, some of the main dependencies are well-optimized.
+#### average code
 
 ## Stuff that i want to add/change: (Todo)
 
