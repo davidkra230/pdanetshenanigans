@@ -14,4 +14,9 @@
 #### *minimal*, only 3 dependencies!
 #### kinda *fast*, some of the main dependencies are well-optimized.
 
+## Stuff that i want to add/change: (Todo)
+
+- [ ] Start windows hotspot to make it easier.
+- [ ] Fix any possible bugs. (yes, i know about the ip address being "Default" bug.)
+
 ###### I'll more readme content soon maybe?
