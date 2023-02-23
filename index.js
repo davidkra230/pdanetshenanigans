@@ -5,12 +5,31 @@ const { Packet } = dns2;
 const dnsServer = dns2.createServer({ udp: true });
 const localIp = require("local-ipv4-address");
 const prompt = require("prompt-sync")();
+const keys = require("./custom/licensoft/index");
 const app = express();
 app.use(express.text());
 
 var ip = null;
 var halt = false;
 var doneSetup = { dns: false, web: false };
+
+// keys
+var keyInput = prompt(
+    "[Licensing] If you are an organization enter your key here (individual? press enter): "
+);
+if (
+    keyInput == "\n" ||
+    keyInput == "" ||
+    keyInput == "\r\n" ||
+    keyInput == "\n\r"
+) {
+    console.log("[Licensing] ok cool.");
+} else if (keys.verify(keyInput) == true) {
+    console.log("[Licensing] kthxbye");
+} else {
+    console.log("[Licensing] Invalid?");
+    return;
+}
 
 localIp().then((yessir) => {
     console.log(
@@ -23,7 +42,7 @@ localIp().then((yessir) => {
         ip = yessir;
         return;
     }
-    ip = input
+    ip = input;
 });
 
 shenaniganHandler = (req, res) => {
@@ -39,7 +58,7 @@ shenaniganHandler = (req, res) => {
 app.get("/android/plus5?.php", (req, res) => {
     try {
         console.log(
-            "Cracked with verification token: " + shenaniganHandler(req, res)
+            "Authorized with verification token: " + shenaniganHandler(req, res)
         );
         res.send("Q" + btoa(shenaniganHandler(req, res)));
     } catch {
