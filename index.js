@@ -3,11 +3,19 @@ const dns2 = require("dns2");
 const dns = new dns2();
 const { Packet } = dns2;
 const dnsServer = dns2.createServer({ udp: true });
-const localIp = require("local-ipv4-address");
+const localIp = require("local-ipv4-address")();
 const prompt = require("prompt-sync")();
 const keys = require("./custom/licensoft/index");
 const app = express();
 app.use(express.text());
+// stolen from advancedweb.hu
+const timeout = (prom, time) => {
+	let timer;
+	return Promise.race([
+		prom,
+		new Promise((_r, rej) => timer = setTimeout(rej, time))
+	]).finally(() => clearTimeout(timer));
+}
 
 var ip = null;
 var halt = false;
@@ -31,18 +39,24 @@ var doneSetup = { dns: false, web: false };
 //    return;
 //}
 
-localIp().then((yessir) => {
+timeout(localIp, 1500).then((yessir) => {
     console.log(
         "(If you have a spare router, you can use it for this process. turn it on, connect, and enter your private ip)"
     );
-    let input = prompt(
-        `Does "${yessir}" look like the correct ip? (enter for yes, or type in the correct ip): `
-    );
-    if (input == "\n" || input == "" || input == "\r\n" || input == "\n\r") {
-        ip = yessir;
-        return;
+    try {
+        let input = prompt(
+            `Does "${yessir}" look like the correct ip? (enter for yes, or type in the correct ip): `
+        );
+        if (input == "\n" || input == "" || input == "\r\n" || input == "\n\r") {
+            ip = yessir;
+            return;
+        }
+        ip = input;
+    } catch {
+        console.log("Failed to get your private ip in a timely fashion, enter it manually below. (this is known to happen on linux or more likely, android with termux. If you want to apply this to the device you are currently using type \"127.0.0.1\" or use your private ip like usual.)")
+        let input = prompt("Enter your private ip: ")
+        ip = input
     }
-    ip = input;
 });
 
 shenaniganHandler = (req, res) => {
