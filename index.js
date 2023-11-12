@@ -3,7 +3,12 @@ const dns2 = require("dns2");
 const dns = new dns2();
 const { Packet } = dns2;
 const dnsServer = dns2.createServer({ udp: true });
-const localIp = require("local-ipv4-address")();
+let localIp
+try {
+    localIp = require("local-ipv4-address")();
+} catch {
+    localIp = new Promise((res)=>{res("failed")})
+}
 const prompt = require("prompt-sync")();
 const keys = require("./custom/licensoft/index");
 const app = express();
